@@ -20,6 +20,7 @@ public class RuiTaiController {
 		try {
 			resultStr = ruiTaiService.getAuth(data);
 			System.out.println("111");
+			System.out.println("333");
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultStr="获取瑞泰验证手机号接口异常";

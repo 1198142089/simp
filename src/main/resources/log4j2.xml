@@ -1,0 +1,60 @@
+<!-- status为不记录log4j本身的日志 -->
+<configuration status="WARN">
+	<properties>
+		<property name="LOG_HOME">/home/ccap1/log</property>
+		<property name="FILE_NAME">mylog</property>
+	</properties>
+	<appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<!-- ThresholdFilter相当于拦截器.info以上的命令不会被拦截. -->
+			<ThresholdFilter level="Trace" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%t] %-40.40logger{39} : %msg%n" />
+		</Console>
+		<File name="Error" fileName="${LOG_HOME}/error.log">
+			<ThresholdFilter level="error" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%t] %-40.40logger{39} : %msg%n" />
+		</File>
+		<RollingFile name="RollingFile" fileName="${LOG_HOME}/${FILE_NAME}.log"
+			filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME}-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%t] %-40.40logger{39} : %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="30 MB" />
+			</Policies>
+		</RollingFile>
+	</appenders>
+	<loggers>
+		<root level="info">
+			<appender-ref ref="RollingFile" />
+			<appender-ref ref="Console" />
+			<appender-ref ref="Error" />
+		</root>
+		<Logger name="com.hlhdidi.servlet" additivity="false">
+			<appender-ref ref="RollingFile" />
+			<appender-ref ref="Console" />
+		</Logger>
+		<Logger name="com.hlhdidi.service" level="error" additivity="true">
+			<appender-ref ref="Console" />
+		</Logger>
+		<logger name="org.springframework.jdbc.core" additivity="false"
+			level="DEBUG">
+			<appender-ref ref="Console" />
+			<appender-ref ref="RollingFile" />
+		</logger>
+		<logger name="org.springframework.jdbc.core.JdbcTemplate" additivity="false"
+			level="DEBUG">
+			<appender-ref ref="Console" />
+			<appender-ref ref="RollingFile" />
+		</logger>
+		<logger name="org.springframework.jdbc.core.StatementCreatorUtils" additivity="false"
+			level="Trace">
+			<appender-ref ref="Console" />
+			<appender-ref ref="RollingFile" />
+		</logger>
+	</loggers>
+</configuration>

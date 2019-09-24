@@ -1,6 +1,7 @@
 package com.yquick.simp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,11 @@ public class RuiTaiController {
 	@PostMapping("/sendEmail")
 	public Object sendEmail(@RequestBody JSONObject data) {
 		return ruiTaiService.sendEmail(data);
+	}
+
+	@GetMapping("/test")
+	public String test() {
+		return "just test";
 	}
 
 }
